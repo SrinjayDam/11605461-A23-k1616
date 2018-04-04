@@ -1,0 +1,135 @@
+#include<stdio.h>
+#include<conio.h>
+int main()
+{
+    int rec,process,Allocate[30][30],Need[30][30],SafeSequence[30],Final[30],Available[30];
+    printf("Enter the number of processes : ");
+    scanf("%d",&process);
+    printf("Enter the number of resources : ");
+    scanf("%d",&rec);
+    printf("---------------------------------\n");
+    printf("\nEnter the number of instances available for each resource:\n");
+    int i;
+    for(i=0;i<rec;i++)
+     {
+      printf("Resource %d :",i);
+      scanf("%d",&Available[i]);
+     }
+    printf("\nAvailable <");
+    for(i=0;i<rec;i++)
+     {
+      printf(" %d",Available[i]);
+     }
+    printf("\n-----------------------------------\n\n");
+    printf("Enter maximum demand of each process(Max) and resource currently allocated to it :\n");
+    int Maximum[30][30];
+    int j;
+    for(i=0;i<process;i++)
+     {
+      printf("\nFor process P%d :\n",i);
+      Final[i]=0;
+      for(j=0;j<rec;j++)
+       {
+        printf("\tCurrently R%d allocated : ",j);
+        scanf("%d",&Allocate[i][j]);
+	printf("\tMaximum R%d required : ",j);
+	scanf("%d",&Maximum[i][j]);
+       }
+     }
+     printf("Maximum is :\n    ");
+     for(i=0;i<rec;i++)
+      {
+       printf(" Resource%d",i);
+      }
+     for(i=0;i<process;i++)
+      {
+       printf("Process%d ",i);
+       for(j=0;j<rec;j++)
+         {
+          printf("  %d",Maximum[i][j]);
+	 }
+      }
+     printf("\nAllocated slot is :\n    ");
+     for(i=0;i<rec;i++)
+       {
+       printf("Resource%d",i);
+       }
+     for(i=0;i<process;i++)
+       {
+       printf("\nProcess%d ",i);
+       for(j=0;j<rec;j++)
+        {
+	printf("  %d",Allocate[i][j]);
+	}
+       }
+     printf("\nNeed :\n    ");
+     for(i=0;i<rec;i++)
+       {
+       printf(" Resource%d",i);
+       }
+     for(i=0;i<process;i++)
+       {
+	printf("\nProcess%d ",i);
+	for(j=0;j<rec;j++)
+         {
+	   Need[i][j]=Maximum[i][j]-Allocate[i][j];
+	   printf("  %d",Need[i][j]);
+	 }
+       }
+     printf("\n----------------------------------------\n\n");
+     int t=0;
+     int count=0;
+     int l=0;
+     while(True)
+     {
+      for(i=0;i<process;i++)
+      {
+	if(Final[i]==0)
+        {
+          for(j=0;j<rec;j++)
+          {
+	   if(Available[j] >= Need[i][j])
+            {
+	     printf("No need to change anything\n");
+	    }
+	   else
+            {
+             break;
+	    }
+	  }
+	  if(j==rec)
+          {	
+           printf("Further execution of process can be done\n");
+	   for(j=0;j<rec;j++)
+           {
+	     Available[j]=Available[j]+Allocate[i][j];
+	   }
+	   SafeSequence[count]=i;
+           Final[i]=1;
+	   count++;
+	   l++;
+	 }
+       }
+     }
+     if(t==process)
+     {
+       if(l==process)
+       {
+	 printf("\n-----------------------------\n\n");
+	 printf("\nSafe state and safe sequence is : less than(<)");
+	 for(i=0;i<process;i++)
+         {
+	   printf(" Process%d",SafeSequence[i]);
+         }
+	 printf("\n---------------------\n\n");
+	 break;
+       }
+       else
+       {
+	printf("\nUnsafe state");
+	break;
+       }
+     }
+     t++;
+  }
+}
