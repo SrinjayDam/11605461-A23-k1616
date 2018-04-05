@@ -1,0 +1,99 @@
+#include<stdio.h>
+#include<conio.h>
+
+struct process
+{
+  int arrivaltime;
+  int bursttime;
+}p[5];
+
+void main()
+{
+   int t = 0; int wait[5];
+   printf("Enter the number of processes you want to execute\n");
+   int n;
+   scanf("%d\n",&n);
+   printf("Enter the details of %d processes",n);
+   int i;
+   for(i=0;i<n;i++)
+   {
+   	  printf("Enter the arrival time of process P%d\n",i);
+   	  scanf("%d\n",&p[i].arrivaltime);
+   	  printf("Enter the burst time of process P%d\n",i);
+   	  scanf("%d\n",&p[i].bursttime);
+   }
+   printf("--------------------------------------------------------------------------------");
+   for(i=0;i<n;i++)
+   {
+   	  printf("\n\t\tProcess\t\t\Arrival Time\t\tBurst Time\t\t\n\n");
+   	  printf("\n\t\tP%d\t\t%d\t\t%d\t\t\n",i,p[i].arrivaltime,p[i].bursttime);
+   }
+   
+}
+
+printf("Initial iteration\n");
+for(i=0;i<n;i++)
+{
+  bool completed;
+
+  if(p[i].arrivaltime<=t){
+    if (p[i].bursttime>0)
+       {
+        completed = false; 
+        if (p[i].bursttime > 3)
+            {
+                
+                t += 3;
+                    
+                    p[i].bursttime -= 3;
+                }
+ 
+                
+                else
+                {
+                    
+                    t = t + p[i].bursttime;
+ 
+            
+                    wait[i] = t - p[i].bursttime;
+ 
+        
+                    p[i].bursttime = 0;
+                }
+            }
+        }
+        
+        if (completed == true)
+          break;
+}
+printf("Final Iteration..............................");
+for(i=0;i<n;i++)
+{
+  bool completed1;
+  
+   if(p[i].arrivaltime<=t)
+   {
+    if (p[i].bursttime>0)
+       {
+        completed1 = false;   // completed = false indicates that there is an incomplete process
+        if (p[i].bursttime > 6)
+            {
+
+                t += 6;  //t shows how much time a process has executed
+        
+                    p[i].bursttime -= 6;  //decrease the burst time by 6
+            }
+                else
+                {
+                    t = t + p[i].bursttime;   //t shows how much time a process has executed
+
+                    wait[i] = t - p[i].bursttime;  //wait time is current time minus burst time
+                    p[i].bursttime = 0;
+                }
+            }
+    }
+        if (completed1 == true) //when all processes are done
+          break;
+}
+printf("All processes are done in second iteration\n\n");
+}
